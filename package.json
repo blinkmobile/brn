@@ -1,0 +1,27 @@
+{
+  "name": "brn",
+  "version": "0.0.1",
+  "description": "BlinkMobile Resource Name, just like Amazon's AWS ARN",
+  "main": "brn.js",
+  "scripts": {
+    "test": "$(npm bin)/eslint . && node ./tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/blinkmobile/brn.git"
+  },
+  "author": "",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/blinkmobile/brn/issues"
+  },
+  "homepage": "https://github.com/blinkmobile/brn",
+  "files": [
+    "brn.js",
+    "LICENSE"
+  ],
+  "devDependencies": {
+    "eslint": "^0.10.2",
+    "tape": "^3.0.3"
+  }
+}
