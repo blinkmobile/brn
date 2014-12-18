@@ -12,6 +12,35 @@ BlinkMobile Resource Name, just like Amazon's AWS ARN
 ```javascript
 var BRN = require('brn');
 
+var brn = new BRN('brn:domain:type:tenant:id')
+```
+
+### API
+
+Instances of `BRN` have `domain`, `type`, `tenant`, and `id` String properties.
+Assign new values to them at any time to adjust a BRN if necessary.
+
+```javascript
+var brn = new BRN('brn:domain:type:tenant:id')
+brn.domain; // 'domain'
+brn.domain = 'blah'; // 'blah'
+brn.toString(); // 'brn:blah:type:tenant:id'
+```
+
+We've also defined `BRN#toString()` and `BRN#toJSON`. Feel free to perform
+string concatenation or JSON serialisation on BRNs.
+
+```javascript
+var brn = new BRN('brn:domain:type:tenant:id')
+'' + brn; // 'brn:domain:type:tenant:id'
+JSON.stringify(brn); // { domain: 'domain', ... }
+```
+
+#### `BRN.isBRN(String input)`
+
+- @returns {Boolean}
+
+```javascript
 BRN.isBRN('blah'); // false
 BRN.isBRN('brn::::'); // false
 
@@ -21,16 +50,19 @@ BRN.isBRN('brn:domain:type::prefix*'); // true
 BRN.isBRN('brn:domain:type:tenant:id'); // true
 BRN.isBRN('brn:domain:type:tenant:*'); // true
 BRN.isBRN('brn:domain:type:tenant:prefix*'); // true
+```
 
+#### `BRN#isValid()`
+
+- @returns {Boolean}
+
+```javascript
 var brn;
 brn = new BRN('blah');
 brn.isValid(); // false
 
 brn = new BRN('brn:domain:type:tenant:id')
 brn.isValid(); // true
-brn.domain; // 'domain'
-brn.domain = 'blah';
-brn.toString(); // 'brn:blah:type:tenant:id'
 ```
 
 ## Development and Testing

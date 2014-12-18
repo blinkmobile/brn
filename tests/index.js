@@ -85,3 +85,11 @@ test('JSON.stringify(new BRN("brn:domain:type:tenant:id"))', function (t) {
   }, 'JSON output is correct');
   t.end();
 });
+
+test('multiple BRN instances', function (t) {
+  var a = new BRN('brn:a:a:a:a');
+  var b = new BRN('brn:b:b:b:b');
+  t.equal(a.domain, 'a', '1st BRN should not be confused by 2nd');
+  t.equal(b.domain, 'b', '2nd BRN should not be confused by 1st');
+  t.end();
+});
