@@ -1,6 +1,13 @@
 'use strict';
 
-var regexp = /^brn:(\w+):(\w+):(\w*):(\*|[\w\-]*\*?)$/;
+/** @private @constant */
+var REGEXP = /^brn:(\w+):(\w+):(\w*):(\*|[\w\-]*\*?)$/;
+
+/** @private @constant */
+var WILDCARD = '[\\w\\-]+';
+
+/** @private @constant */
+var PROPS = ['domain', 'type', 'tenant', 'id'];
 
 /**
  * @constructor
@@ -12,7 +19,7 @@ function BRN(string) {
   if (!string || typeof string !== 'string') {
     return this;
   }
-  match = string.match(regexp);
+  match = string.match(REGEXP);
   if (match) {
     this.domain = match[1];
     this.type = match[2];
@@ -35,7 +42,6 @@ function BRN(string) {
 function configureStringProperty(context, prop) {
   return Object.defineProperty(context, prop, {
     set: function (value) {
-      /** @this context */
       if (typeof value !== 'string') {
         return this['_' + prop];
       }
@@ -43,13 +49,12 @@ function configureStringProperty(context, prop) {
       return this['_' + prop];
     },
     get: function () {
-      /** @this context*/
       return this['_' + prop];
     }
   });
 }
 
-['domain', 'type', 'tenant', 'id'].forEach(function (name) {
+PROPS.forEach(function (name) {
   configureStringProperty(BRN.prototype, name);
 });
 
@@ -81,12 +86,28 @@ BRN.prototype.toJSON = function toJSON() {
 };
 
 /**
+ * @param {BRN} input BRN to test against this BRN
+ * @returns {Boolean} does this BRN's wildcard, etc match the input BRN?
+ */
+BRN.prototype.test = function test(input) {
+  var regexp;
+  if (!input || typeof input !== 'object' || !input instanceof BRN) {
+    input = new BRN(input);
+  }
+  if (!this.isValid() || !input.isValid() || input.id.indexOf('*') !== -1) {
+    return false;
+  }
+  regexp = new RegExp(this.toString().replace('*', WILDCARD));
+  return regexp.test(input.toString());
+};
+
+/**
  * @static
  * @param {String} string incoming value to test
  * @return {Boolean} true if string is a valid BRN
  */
 BRN.isBRN = function isBRN(string) {
-  return regexp.test(string);
+  return REGEXP.test(string);
 };
 
 module.exports = BRN;

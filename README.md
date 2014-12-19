@@ -36,7 +36,7 @@ var brn = new BRN('brn:domain:type:tenant:id')
 JSON.stringify(brn); // { domain: 'domain', ... }
 ```
 
-#### `BRN.isBRN(String input)`
+#### BRN.isBRN(String input)
 
 - @returns {Boolean}
 
@@ -52,7 +52,7 @@ BRN.isBRN('brn:domain:type:tenant:*'); // true
 BRN.isBRN('brn:domain:type:tenant:prefix*'); // true
 ```
 
-#### `BRN#isValid()`
+#### BRN#isValid()
 
 - @returns {Boolean}
 
@@ -64,6 +64,20 @@ brn.isValid(); // false
 brn = new BRN('brn:domain:type:tenant:id')
 brn.isValid(); // true
 ```
+
+#### BRN#test(input)
+
+- @param {String|BRN} input a BRN to see if it matches the current BRN's wildcard
+- @returns {Boolean}
+
+```javascript
+var wildcard = new BRN('brn:domain:type:tenant:*');
+wildcard.test('brn:domain:type:tenant:123'); // true
+```
+
+Notes:
+- this ignores the `tenant` property for now
+- if the input BRN also has a wildcard, then the result will always be `false`
 
 ## Development and Testing
 
