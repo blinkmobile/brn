@@ -1,6 +1,6 @@
 {
   "name": "brn",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "BlinkMobile Resource Name, just like Amazon's AWS ARN",
   "main": "brn.js",
   "scripts": {
