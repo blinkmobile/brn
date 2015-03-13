@@ -107,7 +107,7 @@ test('(new BRN("brn:domain:type::id")).test(...)', function (t) {
 
 test('(new BRN("brn:domain:type::*")).test(...)', function (t) {
   var brn = new BRN('brn:domain:type::*');
-  t.equal(brn.test('brn:domain:type::*'), false, 'wildcard ID returns false');
+  t.equal(brn.test('brn:domain:type::*'), true, 'same wildcard ID returns true');
   t.equal(brn.test('brn:domain:type::abc*'), false, 'prefixed-wildcard ID returns false');
   t.equal(brn.test('brn:domain:type::123'), true, 'any ID returns true');
   t.end();
@@ -116,7 +116,7 @@ test('(new BRN("brn:domain:type::*")).test(...)', function (t) {
 test('(new BRN("brn:domain:type::abc*")).test(...)', function (t) {
   var brn = new BRN('brn:domain:type::abc*');
   t.equal(brn.test('brn:domain:type::*'), false, 'wildcard ID returns false');
-  t.equal(brn.test('brn:domain:type::abc*'), false, 'prefixed-wildcard ID returns false');
+  t.equal(brn.test('brn:domain:type::abc*'), true, 'same prefixed-wildcard ID returns true');
   t.equal(brn.test('brn:domain:type::123'), false, 'any ID returns false');
   t.equal(brn.test('brn:domain:type::abc123'), true, 'prefixed-matching ID returns true');
   t.end();

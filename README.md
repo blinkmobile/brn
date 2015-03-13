@@ -77,7 +77,7 @@ wildcard.test('brn:domain:type:tenant:123'); // true
 
 Notes:
 - this ignores the `tenant` property for now
-- if the input BRN also has a wildcard, then the result will always be `false`
+- if the input BRN also has a wildcard, then BRNs must be the same to pass
 
 #### BRN#isLessSpecificThan(input)
 

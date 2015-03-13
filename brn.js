@@ -108,10 +108,16 @@ BRN.prototype.test = function test(input) {
   if (!input || typeof input !== 'object' || !input instanceof BRN) {
     input = new BRN(input);
   }
-  if (!this.isValid() || !input.isValid() || input.id.indexOf('*') !== -1) {
+  if (!this.isValid() || !input.isValid()) {
     return false;
   }
-  regexp = new RegExp(this.toString().replace('*', WILDCARD));
+  if (this.toString() === input.toString()) {
+    return true;
+  }
+  if (input.id.indexOf('*') !== -1) {
+    return false;
+  }
+  regexp = new RegExp('^' + this.toString().replace('*', WILDCARD) + '$');
   return regexp.test(input.toString());
 };
 
