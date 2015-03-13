@@ -21,7 +21,7 @@
     "LICENSE"
   ],
   "devDependencies": {
-    "eslint": "^0.10.2",
-    "tape": "^3.0.3"
+    "eslint": "^0.16.2",
+    "tape": "^3.5.0"
   }
 }
