@@ -67,7 +67,7 @@ brn.isValid(); // true
 
 #### BRN#test(input)
 
-- @param {String|BRN} input a BRN to see if it matches the current BRN's wildcard
+- @param {String|BRN} input a BRN to see if it matches this BRN's wildcard
 - @returns {Boolean}
 
 ```javascript
@@ -78,6 +78,15 @@ wildcard.test('brn:domain:type:tenant:123'); // true
 Notes:
 - this ignores the `tenant` property for now
 - if the input BRN also has a wildcard, then the result will always be `false`
+
+#### BRN#isLessSpecificThan(input)
+
+- @param {String|BRN} input a BRN to compare with the current BRN
+- @returns {Boolean} true if the input BRN has fewer wildcards than this BRN
+
+Notes:
+- this ignores the `tenant` property for now
+
 
 ## Development and Testing
 

@@ -121,3 +121,44 @@ test('(new BRN("brn:domain:type::abc*")).test(...)', function (t) {
   t.equal(brn.test('brn:domain:type::abc123'), true, 'prefixed-matching ID returns true');
   t.end();
 });
+
+test('#isLessSpecificThan()', function (t) {
+  var fixture = {
+    'brn:domain:type::id': {
+      'brn:domain:type::id': false,
+      'brn:domain:type::*': false,
+      'brn:domain:type::abc*': false
+    },
+    'brn:domain:type::*': {
+      'brn:domain:type::id': true,
+      'brn:domain:type::*': false,
+      'brn:domain:type::abc*': true
+    },
+    'brn:domain:type::abc*': {
+      'brn:domain:type::id': true,
+      'brn:domain:type::*': false,
+      'brn:domain:type::abc*': false
+    }
+  };
+
+  Object.keys(fixture).forEach(function (current) {
+    var brn = new BRN(current);
+
+    t.test('- new BRN("' + current + '")', function (tt) {
+      Object.keys(fixture[current]).forEach(function (input) {
+        var expected = fixture[current][input];
+
+        tt.test('-- input: ' + input, function (ttt) {
+          var actual = brn.isLessSpecificThan(input);
+          ttt.equal(actual, expected, '' + expected);
+          ttt.end();
+        });
+      });
+
+      tt.end();
+    });
+
+  });
+
+  t.end();
+});

@@ -58,6 +58,20 @@ PROPS.forEach(function (name) {
   configureStringProperty(BRN.prototype, name);
 });
 
+/**
+ * http://stackoverflow.com/a/4009768
+ * @private
+ * @param {String} haystack string to search
+ * @param {String} needle string to search for
+ * @returns {Number} occurrences of needle in haystack
+ */
+function count(haystack, needle) {
+  var regexp;
+  needle = needle.replace(/\*/g, '\\*');
+  regexp = new RegExp(needle, 'g');
+  return (haystack.match(regexp) || []).length;
+}
+
 /** @returns {String} e.g. brn:domain:type:tenant:id */
 BRN.prototype.toString = function toString() {
   return 'brn:' + this.domain + ':' + this.type + ':' + this.tenant + ':' + this.id;
@@ -99,6 +113,32 @@ BRN.prototype.test = function test(input) {
   }
   regexp = new RegExp(this.toString().replace('*', WILDCARD));
   return regexp.test(input.toString());
+};
+
+/**
+ * @param {String|BRN} input a BRN to compare with the current BRN
+ * @returns {Boolean} true if the input BRN has fewer wildcards than this BRN
+ */
+BRN.prototype.isLessSpecificThan = function (input) {
+  var id;
+  var inputId;
+  var wildness;
+  var inputWildness;
+  if (!input || typeof input !== 'object' || !input instanceof BRN) {
+    input = new BRN(input);
+  }
+  if (!this.isValid() || !input.isValid()) {
+    return false;
+  }
+  id = this.id;
+  wildness = count(id, '*');
+  inputId = input.id;
+  inputWildness = count(inputId, '*');
+  if (wildness === inputWildness) {
+    wildness -= id.length;
+    inputWildness -= inputId.length;
+  }
+  return wildness > inputWildness;
 };
 
 /**
